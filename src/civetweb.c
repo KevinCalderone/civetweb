@@ -6762,6 +6762,13 @@ connect_socket(struct mg_context *ctx /* may be NULL */,
 		return 0;
 	}
 
+        int nodelay_on = 1;
+        setsockopt(*sock,
+            IPPROTO_TCP,
+            TCP_NODELAY,
+            (SOCK_OPT_TYPE)&nodelay_on,
+            sizeof(nodelay_on));
+
 	set_close_on_exec(*sock, fc(ctx));
 
 	if ((ip_ver == 4)
