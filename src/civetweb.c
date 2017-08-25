@@ -1885,7 +1885,7 @@ event_create(void)
 		/* However, Linux does not return 0 on success either. */
 		return 0;
 	}
-	return (void *)ret;
+	return (void *)(intptr_t)ret;
 }
 
 
@@ -1893,7 +1893,7 @@ static int
 event_wait(void *eventhdl)
 {
 	uint64_t u;
-	int s = (int)read((int)eventhdl, &u, sizeof(u));
+	int s = (int)read((int)(intptr_t)eventhdl, &u, sizeof(u));
 	if (s != sizeof(uint64_t)) {
 		/* error */
 		return 0;
@@ -1907,7 +1907,7 @@ static int
 event_signal(void *eventhdl)
 {
 	uint64_t u = 1;
-	int s = (int)write((int)eventhdl, &u, sizeof(u));
+	int s = (int)write((int)(intptr_t)eventhdl, &u, sizeof(u));
 	if (s != sizeof(uint64_t)) {
 		/* error */
 		return 0;
@@ -1919,7 +1919,7 @@ event_signal(void *eventhdl)
 static void
 event_destroy(void *eventhdl)
 {
-	close((int)eventhdl);
+	close((int)(intptr_t)eventhdl);
 }
 #endif
 
